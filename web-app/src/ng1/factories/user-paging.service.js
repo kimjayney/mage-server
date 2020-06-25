@@ -1,10 +1,12 @@
+"use strict";
+
 module.exports = UserPagingService;
 
 UserPagingService.$inject = ['UserService', '$q'];
 
 function UserPagingService(UserService, $q) {
 
-    var service = {
+    const service = {
         constructDefault,
         refresh,
         count,
@@ -19,8 +21,8 @@ function UserPagingService(UserService, $q) {
     return service;
 
     function constructDefault() {
-        var itemsPerPage = 10;
-        var stateAndData = new Map();
+        const itemsPerPage = 10;
+        const stateAndData = new Map();
         stateAndData['all'] = {
             countFilter: {},
             userFilter: { limit: itemsPerPage, sort: { displayName: 1, _id: 1 } },
@@ -55,11 +57,11 @@ function UserPagingService(UserService, $q) {
 
     function refresh(stateAndData) {
 
-        var promises = [];
+        let promises = [];
 
         for (const [key, value] of Object.entries(stateAndData)) {
 
-            var promise = $q.all({ count: UserService.getUserCount(value.countFilter), pageInfo: UserService.getAllUsers(value.userFilter) }).then(result => {
+            const promise = $q.all({ count: UserService.getUserCount(value.countFilter), pageInfo: UserService.getAllUsers(value.userFilter) }).then(result => {
                 stateAndData[key].userCount = result.count.data.count;
                 stateAndData[key].pageInfo = result.pageInfo;
                 $q.resolve(key);
@@ -72,11 +74,11 @@ function UserPagingService(UserService, $q) {
     }
 
     function count(data) {
-        return data.userCount;
+        return data.size;
     }
 
     function hasNext(data) {
-        var status = false;
+        let status = false;
 
         if (data.pageInfo && data.pageInfo.links) {
             status = data.pageInfo.links.next != null &&
@@ -91,7 +93,7 @@ function UserPagingService(UserService, $q) {
     }
 
     function hasPrevious(data) {
-        var status = false;
+        let status = false;
 
         if (data.pageInfo && data.pageInfo.links) {
             status = data.pageInfo.links.prev != null &&
@@ -106,7 +108,7 @@ function UserPagingService(UserService, $q) {
     }
 
     function move(start, data) {
-        var filter = JSON.parse(JSON.stringify(data.userFilter));
+        let filter = JSON.parse(JSON.stringify(data.userFilter));
         filter.start = start;
         return UserService.getAllUsers(filter).then(pageInfo => {
             data.pageInfo = pageInfo;
@@ -115,7 +117,7 @@ function UserPagingService(UserService, $q) {
     }
 
     function users(data) {
-        var users = [];
+        let users = [];
 
         if (data.pageInfo && data.pageInfo.users) {
             users = data.pageInfo.users;
@@ -132,7 +134,7 @@ function UserPagingService(UserService, $q) {
 
         const previousSearch = data.searchFilter;
 
-        var promise = null;
+        let promise = null;
 
         if (previousSearch == '' && userSearch == '') {
             //Not performing a seach
@@ -153,7 +155,7 @@ function UserPagingService(UserService, $q) {
             //Perform the server side searching
             data.searchFilter = userSearch;
 
-            var filter = data.userFilter;
+            let filter = data.userFilter;
             filter.or = {
                 displayName: '.*' + userSearch + '.*',
                 email: '.*' + userSearch + '.*'

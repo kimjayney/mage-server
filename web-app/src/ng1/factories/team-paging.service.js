@@ -1,10 +1,12 @@
+"use strict";
+
 module.exports = TeamPagingService;
 
 TeamPagingService.$inject = ['Team', '$q'];
 
 function TeamPagingService(Team, $q) {
 
-    var service = {
+    const service = {
         constructDefault,
         refresh,
         count,
@@ -19,8 +21,8 @@ function TeamPagingService(Team, $q) {
     return service;
 
     function constructDefault() {
-        var itemsPerPage = 10;
-        var stateAndData = new Map();
+        const itemsPerPage = 10;
+        const stateAndData = new Map();
         stateAndData['all'] = {
             countFilter: {},
             teamFilter: { populate: false, limit: itemsPerPage, sort: { name: 1, _id: 1 }, e: { teamEventId: null} },
@@ -34,11 +36,11 @@ function TeamPagingService(Team, $q) {
 
     function refresh(stateAndData) {
 
-        var promises = [];
+        let promises = [];
 
         for (const [key, value] of Object.entries(stateAndData)) {
 
-            var promise = $q.all({ count: Team.count(value.countFilter).$promise, pageInfo: Team.query(value.teamFilter).$promise }).then(result => {
+            const promise = $q.all({ count: Team.count(value.countFilter).$promise, pageInfo: Team.query(value.teamFilter).$promise }).then(result => {
                 stateAndData[key].teamCount = result.count.count;
                 stateAndData[key].pageInfo = result.pageInfo[0];
                 $q.resolve(key);
@@ -55,7 +57,7 @@ function TeamPagingService(Team, $q) {
     }
 
     function hasNext(data) {
-        var status = false;
+        let status = false;
 
         if (data.pageInfo && data.pageInfo.links) {
             status = data.pageInfo.links.next != null &&
@@ -70,7 +72,7 @@ function TeamPagingService(Team, $q) {
     }
 
     function hasPrevious(data) {
-        var status = false;
+        let status = false;
 
         if (data.pageInfo && data.pageInfo.links) {
             status = data.pageInfo.links.prev != null &&
@@ -85,7 +87,7 @@ function TeamPagingService(Team, $q) {
     }
 
     function move(start, data) {
-        var filter = JSON.parse(JSON.stringify(data.teamFilter));
+        let filter = JSON.parse(JSON.stringify(data.teamFilter));
         filter.start = start;
         return $q.all({pageInfo: Team.query(filter).$promise }).then(result => {
             data.pageInfo = result.pageInfo[0];
@@ -94,7 +96,7 @@ function TeamPagingService(Team, $q) {
     }
 
     function teams(data) {
-        var teams = [];
+        let teams = [];
 
         if (data.pageInfo && data.pageInfo.teams) {
             teams = data.pageInfo.teams;
@@ -111,7 +113,7 @@ function TeamPagingService(Team, $q) {
 
         const previousSearch = data.searchFilter;
 
-        var promise = null;
+        let promise = null;
 
         if (previousSearch == '' && teamSearch == '') {
             //Not performing a seach
@@ -132,7 +134,7 @@ function TeamPagingService(Team, $q) {
             //Perform the server side searching
             data.searchFilter = teamSearch;
 
-            var filter = data.teamFilter;
+            let filter = data.teamFilter;
             if(nameSearchOnly) {
                 filter.or = {
                     name: '.*' + teamSearch + '.*'

@@ -1,10 +1,12 @@
+"use strict";
+
 module.exports = DevicePagingService;
 
 DevicePagingService.$inject = ['DeviceService', '$q'];
 
 function DevicePagingService(DeviceService, $q) {
 
-    var service = {
+    const service = {
         constructDefault,
         refresh,
         count,
@@ -19,8 +21,8 @@ function DevicePagingService(DeviceService, $q) {
     return service;
 
     function constructDefault() {
-        var itemsPerPage = 10;
-        var stateAndData = new Map();
+        const itemsPerPage = 10;
+        const stateAndData = new Map();
         stateAndData['all'] = {
             countFilter: {},
             deviceFilter: { limit: itemsPerPage, sort: { userAgent: 1, _id: 1 } },
@@ -48,11 +50,11 @@ function DevicePagingService(DeviceService, $q) {
 
     function refresh(stateAndData) {
 
-        var promises = [];
+        let promises = [];
 
         for (const [key, value] of Object.entries(stateAndData)) {
 
-            var promise = $q.all({ count: DeviceService.count(value.countFilter), pageInfo: DeviceService.getAllDevices(value.deviceFilter) }).then(result => {
+            const promise = $q.all({ count: DeviceService.count(value.countFilter), pageInfo: DeviceService.getAllDevices(value.deviceFilter) }).then(result => {
                 stateAndData[key].deviceCount = result.count.data.count;
                 stateAndData[key].pageInfo = result.pageInfo;
                 $q.resolve(key);
@@ -69,7 +71,7 @@ function DevicePagingService(DeviceService, $q) {
     }
 
     function hasNext(data) {
-        var status = false;
+        let status = false;
 
         if (data.pageInfo && data.pageInfo.links) {
             status = data.pageInfo.links.next != null &&
@@ -84,7 +86,7 @@ function DevicePagingService(DeviceService, $q) {
     }
 
     function hasPrevious(data) {
-        var status = false;
+        let status = false;
 
         if (data.pageInfo && data.pageInfo.links) {
             status = data.pageInfo.links.prev != null &&
@@ -99,7 +101,7 @@ function DevicePagingService(DeviceService, $q) {
     }
 
     function move(start, data) {
-        var filter = JSON.parse(JSON.stringify(data.deviceFilter));
+        let filter = JSON.parse(JSON.stringify(data.deviceFilter));
         filter.start = start;
         return DeviceService.getAllDevices(filter).then(pageInfo => {
             data.pageInfo = pageInfo;
@@ -108,7 +110,7 @@ function DevicePagingService(DeviceService, $q) {
     }
 
     function devices(data) {
-        var devices = [];
+        let devices = [];
 
         if (data.pageInfo && data.pageInfo.devices) {
             devices = data.pageInfo.devices;
@@ -132,7 +134,7 @@ function DevicePagingService(DeviceService, $q) {
 
         const previousSearch = data.searchFilter;
 
-        var promise = null;
+        let promise = null;
 
         if (previousSearch == '' && deviceSearch == '') {
             //Not performing a seach
@@ -155,7 +157,7 @@ function DevicePagingService(DeviceService, $q) {
             //Perform the server side searching
             data.searchFilter = deviceSearch;
 
-            var filter = data.deviceFilter;
+            let filter = data.deviceFilter;
             if (userSearch == null) {
                 filter.or = {
                     userAgent: '.*' + deviceSearch + '.*',
