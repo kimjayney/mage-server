@@ -16,11 +16,9 @@ class AdminDashboardController {
     this.userSearch = '';
     this.userState = 'inactive';
     this.inactiveUsers = [];
-    this.isSearching = false;
     this.stateAndData = this.UserPagingService.constructDefault();
     this.loginSearchResults = [];
 
-    this.isSearchingDevices = false;
     this.deviceStateAndData = this.DevicePagingService.constructDefault();
     this.deviceState = 'unregistered';
     this.deviceSearch = '';
@@ -132,23 +130,15 @@ class AdminDashboardController {
   }
 
   searchLoginsAgainstUsers(searchString) {
-    this.isSearching = true;
-
     return this.UserPagingService.search(this.stateAndData['all'], searchString).then(users => {
       this.loginSearchResults = users;
-      this.isSearching = false;
-
       return this.loginSearchResults;
     });
   }
 
   searchLoginsAgainstDevices(searchString) {
-    this.isSearchingDevices = true;
-
     return this.DevicePagingService.search(this.deviceStateAndData['all'], searchString).then(devices => {
       this.loginDeviceSearchResults = devices;
-      this.isSearchingDevices = false;
-
       return this.loginDeviceSearchResults;
     });
   }
