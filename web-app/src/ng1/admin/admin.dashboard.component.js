@@ -132,6 +132,11 @@ class AdminDashboardController {
   searchLoginsAgainstUsers(searchString) {
     return this.UserPagingService.search(this.stateAndData['all'], searchString).then(users => {
       this.loginSearchResults = users;
+
+      if(this.loginSearchResults.length == 0){
+        this.loginPage = null;
+      }
+
       return this.loginSearchResults;
     });
   }
@@ -139,6 +144,11 @@ class AdminDashboardController {
   searchLoginsAgainstDevices(searchString) {
     return this.DevicePagingService.search(this.deviceStateAndData['all'], searchString).then(devices => {
       this.loginDeviceSearchResults = devices;
+
+      if(this.loginDeviceSearchResults.length == 0){
+        this.loginPage = null;
+      }
+
       return this.loginDeviceSearchResults;
     });
   }
