@@ -47,7 +47,7 @@ function countAndPage(countQuery, query, options, dataKey) {
 }
 
 function page(count, query, options, dataKey, dataConverter) {
-  var sort = {};
+  let sort = {};
   if (options.sort) {
     let json = JSON.parse(options.sort);
 
@@ -56,9 +56,9 @@ function page(count, query, options, dataKey, dataConverter) {
     }
   }
 
-  var limit = Math.abs(options.limit) || 10;
-  var start = (Math.abs(options.start) || 0);
-  var page = Math.ceil(start / limit);
+  const limit = Math.abs(options.limit) || 10;
+  const start = (Math.abs(options.start) || 0);
+  const page = Math.ceil(start / limit);
 
   return query.sort(sort).limit(limit).skip(limit * page).exec().then(data => {
     if (dataConverter) {
@@ -68,7 +68,7 @@ function page(count, query, options, dataKey, dataConverter) {
     pageInfo.start = start;
     pageInfo.limit = limit;
     pageInfo[dataKey] = data;
-    pageInfo.size = data.length;
+    pageInfo.size = count;
 
     const estimatedNext = start + limit;
 
@@ -85,7 +85,7 @@ function page(count, query, options, dataKey, dataConverter) {
 }
 
 async function queryUsersAndDevicesThenPage(options, conditions) {
-  var registered = null;
+  let registered = null;
   if(conditions.registered != null) {
     registered = conditions.registered;
     delete conditions.registered;
@@ -93,7 +93,7 @@ async function queryUsersAndDevicesThenPage(options, conditions) {
   const count = await User.Model.count(conditions);
   return User.Model.find(conditions, "_id").exec().then(data => {
     let ids = [];
-    for(var i =0; i < data.length; i++) {
+    for(let i =0; i < data.length; i++) {
       let user = data[i];
       ids.push(user.id);
     }
