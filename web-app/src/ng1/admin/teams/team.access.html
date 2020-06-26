@@ -37,7 +37,7 @@
 
         <div class="col-md-2">
           <button class="btn btn-success" ng-click="$ctrl.addMember()"
-            ng-disabled="($ctrl.nonMember.selected == null || $ctrl.nonMember.selected == '')"><i class="fa fa-plus"></i> Add member to
+            ng-disabled="($ctrl.nonMember.selected == null || !$ctrl.nonMember.selected.id)"><i class="fa fa-plus"></i> Add member to
             team</button>
         </div>
       </div>
