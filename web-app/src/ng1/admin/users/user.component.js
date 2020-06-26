@@ -218,6 +218,10 @@ class AdminUserController {
     return this.DevicePagingService.search(this.deviceStateAndData[this.deviceState], searchString).then(devices => {
       this.loginSearchResults = devices;
       this.isSearchingDevices = false;
+
+      if(this.loginDeviceSearchResults.length == 0){
+        this.loginPage = null;
+      }
   
       return this.loginSearchResults;
     });
