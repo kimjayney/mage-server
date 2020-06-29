@@ -1,3 +1,5 @@
+"use strict";
+
 import _ from 'underscore';
 import moment from 'moment';
 
@@ -119,7 +121,7 @@ class AdminDashboardController {
 
   searchDevices() {
     this.DevicePagingService.search(this.deviceStateAndData[this.deviceState], this.deviceSearch).then(devices => {
-      if(devices.length > 0) {
+      if (devices.length > 0) {
         this.unregisteredDevices = devices;
       } else {
         this.DevicePagingService.search(this.deviceStateAndData[this.deviceState], this.deviceSearch, this.deviceSearch).then(devices => {
@@ -133,8 +135,11 @@ class AdminDashboardController {
     return this.UserPagingService.search(this.stateAndData['all'], searchString).then(users => {
       this.loginSearchResults = users;
 
-      if(this.loginSearchResults.length == 0){
-        this.loginPage = null;
+      if (this.loginSearchResults.length == 0) {
+        const noUser = {
+          displayName: "No Results Found"
+        }
+        this.loginSearchResults.push(noUser);
       }
 
       return this.loginSearchResults;
@@ -145,8 +150,11 @@ class AdminDashboardController {
     return this.DevicePagingService.search(this.deviceStateAndData['all'], searchString).then(devices => {
       this.loginDeviceSearchResults = devices;
 
-      if(this.loginDeviceSearchResults.length == 0){
-        this.loginPage = null;
+      if (this.loginDeviceSearchResults.length == 0) {
+        const noDevice = {
+          userAgent: "No Results Found"
+        }
+        this.loginDeviceSearchResults.push(noDevice);
       }
 
       return this.loginDeviceSearchResults;
