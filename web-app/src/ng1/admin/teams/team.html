@@ -88,9 +88,7 @@
                     <input type="text" ng-model="$ctrl.nonMember" placeholder="Search for a user to add to team"
                       uib-typeahead="user as user.displayName for user in $ctrl.searchNonMembers($viewValue)"
                       typeahead-loading="$ctrl.nonMemberSearchResults" typeahead-no-results="noSearchResults"
-                      class="form-control" ng-model-options="{ debounce: 1000 }" 
-                      uib-popover="No Results Found" popover-trigger="'none'" 
-                      popover-is-open="noSearchResults == true && $ctrl.nonMember != ''">
+                      class="form-control" ng-model-options="{ debounce: 1000 }">
                   </div>
                 </div>
 
