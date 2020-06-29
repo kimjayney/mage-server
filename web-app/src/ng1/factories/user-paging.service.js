@@ -74,7 +74,7 @@ function UserPagingService(UserService, $q) {
     }
 
     function count(data) {
-        return data.size;
+        return data.userCount;
     }
 
     function hasNext(data) {
