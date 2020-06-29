@@ -108,10 +108,6 @@
                     <input type="text" ng-model="$ctrl.nonMember" placeholder="Search for a user/team to add to event"
                       uib-typeahead="user as user.name for user in $ctrl.searchNonMembers($viewValue)"
                       class="form-control" ng-model-options="{ debounce: 1000 }">
-                    <i ng-show="$ctrl.isSearching == true" class="glyphicon glyphicon-refresh"></i>
-                    <div ng-show="noSearchResults">
-                      <i class="glyphicon glyphicon-remove"></i> No Results Found
-                    </div>
                   </div>
                 </div>
 
