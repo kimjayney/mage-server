@@ -1,3 +1,5 @@
+"use strict";
+
 import _ from 'underscore';
 
 class AdminUsersController {
@@ -13,7 +15,7 @@ class AdminUsersController {
     this.stateAndData = this.UserPagingService.constructDefault();
 
     this.token = LocalStorageService.getToken();
-    this.filter = "all"; // possible values all, active, inactive
+    this.filter = "all"; 
     this.userSearch = '';
 
     this.hasUserCreatePermission = _.contains(UserService.myself.role.permissions, 'CREATE_USER');
@@ -91,7 +93,7 @@ class AdminUsersController {
   deleteUser($event, user) {
     $event.stopPropagation();
 
-    var modalInstance = this.$uibModal.open({
+    const modalInstance = this.$uibModal.open({
       resolve: {
         user: () => {
           return user;
